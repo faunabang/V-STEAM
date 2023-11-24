@@ -1,22 +1,6 @@
-import asyncio
-import time
-import keyboard
-import threading
 from openai import OpenAI
 from pathlib import Path
-from datetime import datetime
 from dotenv import load_dotenv;load_dotenv()  # openai_key .env 선언 사용
-import json
-import re
-import pyvts
-from datetime import datetime
-import os
-import sys
-from emoji import demojize
-import Jedol_Answer as ans
-from dotenv import load_dotenv;load_dotenv() # openai_key  .env 선언 사용
-import utils.movement as move
-import pytchat
 
 
 def chatGPT_tts(answer):
