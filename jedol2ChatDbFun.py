@@ -72,7 +72,7 @@ def update_history(token, new_chat, max_token=None):
 
         # 업데이트 쿼리 실행
         db.execute("UPDATE chat_data SET history=?, date=? WHERE token=?", (json.dumps(current_history,ensure_ascii=False), current_time, token))
-
+    
     conn.commit()
     conn.close()
   

@@ -117,7 +117,7 @@ def vectorDB_create(vectorDB_folder):
                         metadata=page.metadata
                         )
                ]
-    print(" jshs-story.txt ---- load !~~~~~~~~~")
+    print(" jshs-story.txt ----- load !")
     # print( page.page_content )
     # print( page.metadata )
     loader = WebBaseLoader(web_path="https://jeju-s.jje.hs.kr/jeju-s")
@@ -136,29 +136,29 @@ def vectorDB_create(vectorDB_folder):
                     )
   
     # jshs.loader_documents_viewer(documents)
-    print(" 학교주소 ---- load !~~~~~~~~~")
-    # 식단-----------------------
-    today = datetime.now().today()
-    date1 = today - timedelta(days=2)
-    date2 = today + timedelta(days=5)
-    start_date=date1.strftime('%Y-%m-%d')
-    end_date=date2.strftime('%Y-%m-%d')
-    office_Code="T10"  # 교육청 NEIS 코드
-    school_code="9290066" # 학교 Neis 코드   9290066 -> 과학고 학교코드
-    url=f"https://api.salvion.kr/neisApi?of={office_Code}&sc={school_code}&ac=date&sd={start_date}&ed={end_date}&code=all"
-    loader = WebBaseLoader(web_path=url)
-    page=loader.load()[0]
+    print(" 학교주소 ----- load !")
+    # # 식단-----------------------
+    # today = datetime.now().today()
+    # date1 = today - timedelta(days=2)
+    # date2 = today + timedelta(days=5)
+    # start_date=date1.strftime('%Y-%m-%d')
+    # end_date=date2.strftime('%Y-%m-%d')
+    # office_Code="T10"  # 교육청 NEIS 코드
+    # school_code="9290066" # 학교 Neis 코드   9290066 -> 과학고 학교코드
+    # url=f"https://api.salvion.kr/neisApi?of={office_Code}&sc={school_code}&ac=date&sd={start_date}&ed={end_date}&code=all"
+    # loader = WebBaseLoader(web_path=url)
+    # page=loader.load()[0]
     
-    page_content= json.loads(page.page_content)
-    page_content= jshs.getMealMenuNeis(page_content=page_content)
+    # page_content= json.loads(page.page_content)
+    # page_content= jshs.getMealMenuNeis(page_content=page_content)
 
-    documents.append( Document(
-                        page_content=page_content,
-                        metadata=page.metadata
-                        )
-                    )
+    # documents.append( Document(
+    #                     page_content=page_content,
+    #                     metadata=page.metadata
+    #                     )
+    #                 )
 
-    print(f" 점심 메뉴 ---- load !~~~~{url}")
+    # print(f" 점심 메뉴 ----- load ! {url}")
 
     # 학사일정-------------------------------------------
     school_plan=jshs.school_schedule(datetime.now().today().year)
@@ -168,7 +168,7 @@ def vectorDB_create(vectorDB_folder):
                         )
                     )
     
-    print(f" 학사일정  ---- load !")
+    print(f" 학사일정  ----- load !")
     # # 교육과정
     # with pdfplumber.open("data/2023-plan.pdf") as pdf_document:
     #     for page_number, page in enumerate(pdf_document.pages):
@@ -240,9 +240,9 @@ def vectorDB_create(vectorDB_folder):
 def ai_response( vectorDB_folder="", query="", token=""):
 
     client = OpenAI()
-    chat_history=chatDB.query_history(token) # 기존 대화 내용
+    chat_history = chatDB.query_history(token) # 기존 대화 내용
     # print("chat_history=",chat_history)
-    answer="" 
+    answer=""
     new_chat=""
           
     index_path = os.path.join(vectorDB_folder, "index.faiss")
@@ -262,7 +262,8 @@ def ai_response( vectorDB_folder="", query="", token=""):
                         오늘 요일는 {jshs.today_week_name()} 이다.
                         이번 달은 {jshs.today_month()} 이다.
                         올해는 {jshs.today_year()} 이다.
-                        제공되는 정보는 모두 제돌이가 학습해서 알고 있는 지식이다.
+                        너는 제돌이이다.
+                        제공되는 정보는 모두 제돌이가 학습해서 알고 있는 지식이다. 답변은 네가 아는 내용처럼 말해라.
                         너는 제주과학고등학교 안내 도우미다.
                         정보가 없는 질문에는 정보가 없다고 답변해야한다.
                         질문에 간결하게 답한다.
@@ -306,8 +307,10 @@ def ai_response( vectorDB_folder="", query="", token=""):
     #         answer=response.choices[0].message.content
                 
     # 새로운 대화 내용을 업데이트
+
     if not answer_no_update:
         chatDB.update_history(token, new_chat, max_token=3000)
+    
     return answer  
 
 

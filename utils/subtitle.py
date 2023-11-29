@@ -14,7 +14,7 @@ def generate_subtitle(chat_now, answer):
     with open("texts/selected_chat.txt", "w", encoding="utf-8") as outfile:
         try:
             words = chat_now.split()
-            lines = [words[i:i+6] for i in range(0, len(words), 6)]
+            lines = [words[i:i+5] for i in range(0, len(words), 5)]
             for line in lines:
                 outfile.write(" ".join(line) + "\n")
         except:

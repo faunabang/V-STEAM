@@ -261,7 +261,7 @@ def ai_response( vectorDB_folder="", query="", token=""):
                 
     # 새로운 대화 내용을 업데이트
     if not answer_no_update:
-        chatDB.update_history(token, new_chat, max_token=3000, ai_mode=ai_mode)
+        chatDB.update_history(token, new_chat, max_token=3000)
     return answer    
 
 if __name__ == "__main__":
